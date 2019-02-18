@@ -18,6 +18,9 @@ import com.paypal.api.payments.Links;
 import com.paypal.api.payments.Payment;
 import com.paypal.base.rest.PayPalRESTException;
 
+/**
+ * https://developer.paypal.com/docs/api/quickstart/payments/#
+ */
 @Controller
 @RequestMapping("/")
 public class PaymentController {
