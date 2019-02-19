@@ -31,4 +31,14 @@ public class PaypalServiceTest {
                 SUCCESSURL);
         System.out.println(payment);
     }
+
+    @Test(expected = Exception.class)
+    public void executePayment() throws PayPalRESTException {
+        String paymentId = "some wrong id";
+        String payerId = "D7CSNG5N24R7W";
+        Payment payment = paypalService.executePayment(paymentId, payerId);
+//        assertEquals("approved",payment.getState());
+        System.out.println(payment);
+    }
+
 }

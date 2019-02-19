@@ -20,6 +20,14 @@ import com.paypal.base.rest.PayPalRESTException;
 
 /**
  * https://developer.paypal.com/docs/api/quickstart/payments/#
+ * paypal 交付（payment）步骤如下：
+ * 1. 创建支付对象 -> 返回paypal的URL {@link #pay(HttpServletRequest)}
+ * 2. 用户到paypal的URL中进行交付操作
+ * 	a） 用户确定支付信息 TODO 在paypal页面没有显示支付金额？
+ * 	b） 用户确定支付方式（信用卡、paypal账户）进行支付
+ * 3. 执行支付
+ * 	a) 用户确认调用 {@link #confirmPay(String, String)}
+ * 	b) 用户取消调用 {@link #cancelPay()}
  */
 @Controller
 @RequestMapping("/")
@@ -39,12 +47,7 @@ public class PaymentController {
 	}
 
 	/**
-	 * paypal 交付（payment）步骤如下：
-	 * 1. 创建支付对象 -> 返回paypal的URL
-	 * 2. 用户到paypal的URL中进行交付操作
-	 * 	a） 用户确定支付信息 TODO 在paypal页面没有显示支付金额？
-	 * 	b） 用户确定支付方式（信用卡、paypal账户）进行支付
-	 * 3. 执行
+	 * 请求调用paypal进行支付
 	 * @param request
 	 * @return
 	 */
