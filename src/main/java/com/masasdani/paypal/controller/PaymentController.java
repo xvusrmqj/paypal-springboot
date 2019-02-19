@@ -52,7 +52,7 @@ public class PaymentController {
 					cancelUrl, 
 					successUrl);
 			for(Links links : payment.getLinks()){
-				if(links.getRel().equals("approval_url")){
+				if(links.getRel().equals("approval_url")){ //重定向到paypal网站进行支付
 					return "redirect:" + links.getHref();
 				}
 			}
@@ -71,7 +71,7 @@ public class PaymentController {
 	public String successPay(@RequestParam("paymentId") String paymentId, @RequestParam("PayerID") String payerId){
 		try {
 			Payment payment = paypalService.executePayment(paymentId, payerId);
-			if(payment.getState().equals("approved")){
+			if(payment.getState().equals("approved")){ // 这个相当于前端回调
 				return "success";
 			}
 		} catch (PayPalRESTException e) {

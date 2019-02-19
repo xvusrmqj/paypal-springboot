@@ -71,7 +71,9 @@ public class PaypalService {
                         env.getProperty("paypal.client.secret"),
                         env.getProperty("paypal.mode")));
     }
-
+    /**
+     *  执行支付
+     */
     public Payment executePayment(String paymentId, String payerId) throws PayPalRESTException {
         Payment payment = new Payment();
         payment.setId(paymentId);
