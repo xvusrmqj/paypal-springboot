@@ -88,7 +88,7 @@ public class PaymentController {
 	 * @return
 	 */
 	@RequestMapping(method = RequestMethod.GET, value = PAYPAL_CONFIRM_URL)
-	public String successPay(@RequestParam("paymentId") String paymentId, @RequestParam("PayerID") String payerId){
+	public String confirmPay(@RequestParam("paymentId") String paymentId, @RequestParam("PayerID") String payerId){
 		try {
 			// 执行支付
 			Payment payment = paypalService.executePayment(paymentId, payerId);
