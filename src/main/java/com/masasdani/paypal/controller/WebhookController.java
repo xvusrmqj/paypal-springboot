@@ -20,6 +20,10 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * 该Controller用于Paypal Webhook调用，不用于界面显示及路由。
+ * @author lvxg
+ */
 @Controller
 @RequestMapping("/")
 public class WebhookController {
