@@ -25,7 +25,7 @@ import com.paypal.base.rest.PayPalRESTException;
 @RequestMapping("/")
 public class PaymentController {
 	
-	public static final String PAYPAL_SUCCESS_URL = "pay/success";
+	public static final String PAYPAL_CONFIRM_URL = "pay/confirm";
 	public static final String PAYPAL_CANCEL_URL = "pay/cancel";
 	
 	private Logger log = LoggerFactory.getLogger(getClass());
@@ -37,11 +37,21 @@ public class PaymentController {
 	public String index(){
 		return "index";
 	}
-	
+
+	/**
+	 * paypal 交付（payment）步骤如下：
+	 * 1. 创建支付对象 -> 返回paypal的URL
+	 * 2. 用户到paypal的URL中进行交付操作
+	 * 	a） 用户确定支付信息 TODO 在paypal页面没有显示支付金额？
+	 * 	b） 用户确定支付方式（信用卡、paypal账户）进行支付
+	 * 3. 执行
+	 * @param request
+	 * @return
+	 */
 	@RequestMapping(method = RequestMethod.POST, value = "pay")
 	public String pay(HttpServletRequest request){
 		String cancelUrl = URLUtils.getBaseURl(request) + "/" + PAYPAL_CANCEL_URL;
-		String successUrl = URLUtils.getBaseURl(request) + "/" + PAYPAL_SUCCESS_URL;
+		String successUrl = URLUtils.getBaseURl(request) + "/" + PAYPAL_CONFIRM_URL;
 		try {
 			Payment payment = paypalService.createPayment(
 					4.00, 
@@ -62,15 +72,27 @@ public class PaymentController {
 		return "redirect:/";
 	}
 
+	/**
+	 * 当用户取消支付信息后调用
+	 * @return
+	 */
 	@RequestMapping(method = RequestMethod.GET, value = PAYPAL_CANCEL_URL)
 	public String cancelPay(){
 		return "cancel";
 	}
 
-	@RequestMapping(method = RequestMethod.GET, value = PAYPAL_SUCCESS_URL)
+	/**
+	 * 当用户确认支付信息后调用
+	 * @param paymentId
+	 * @param payerId
+	 * @return
+	 */
+	@RequestMapping(method = RequestMethod.GET, value = PAYPAL_CONFIRM_URL)
 	public String successPay(@RequestParam("paymentId") String paymentId, @RequestParam("PayerID") String payerId){
 		try {
+			// 执行支付
 			Payment payment = paypalService.executePayment(paymentId, payerId);
+			// 支付成功
 			if(payment.getState().equals("approved")){ // 这个相当于前端回调
 				return "success";
 			}
