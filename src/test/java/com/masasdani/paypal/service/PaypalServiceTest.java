@@ -4,6 +4,7 @@ import com.masasdani.paypal.config.PaypalPaymentIntent;
 import com.masasdani.paypal.config.PaypalPaymentMethod;
 import com.paypal.api.payments.Payment;
 import com.paypal.base.rest.PayPalRESTException;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +32,6 @@ public class PaypalServiceTest {
                 SUCCESSURL);
         System.out.println(payment);
     }
-
     @Test(expected = Exception.class)
     public void executePayment() throws PayPalRESTException {
         String paymentId = "some wrong id";
@@ -39,6 +39,12 @@ public class PaypalServiceTest {
         Payment payment = paypalService.executePayment(paymentId, payerId);
 //        assertEquals("approved",payment.getState());
         System.out.println(payment);
+    }
+
+    @Test
+    @Ignore("only run when you want to add Webhook")
+    public void addWebHook() throws PayPalRESTException {
+        paypalService.addWebHook();
     }
 
 }

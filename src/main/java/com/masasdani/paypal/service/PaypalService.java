@@ -92,4 +92,34 @@ public class PaypalService {
                 env.getProperty("paypal.client.secret"),
                 env.getProperty("paypal.mode")), paymentExecute);
     }
+
+    /**
+     * subscribe webhook to events.
+     */
+    public void addWebHook(){
+        //1. Define webhook events
+        List eventTypes = new ArrayList();
+        eventTypes.add(new EventType("PAYMENT.CAPTURE.COMPLETED"));
+        eventTypes.add(new EventType("PAYMENT.CAPTURE.DENIED"));
+        eventTypes.add(new EventType("PAYMENT.ORDER.CANCELLED"));
+        eventTypes.add(new EventType("PAYMENT.ORDER.CREATED"));
+        eventTypes.add(new EventType("PAYMENT.SALE.COMPLETED"));
+        eventTypes.add(new EventType("PAYMENT.SALE.DENIED"));
+        eventTypes.add(new EventType("VAULT.CREDIT-CARD.CREATED"));
+        eventTypes.add(new EventType("VAULT.CREDIT-CARD.DELETED"));
+
+        Webhook webhook = new Webhook();
+        webhook.setUrl("https://db30b88d.ngrok.io/webhook");
+        webhook.setEventTypes(eventTypes);
+        //2. Create webhook
+        try{
+            Webhook createdWebhook = webhook.create(new APIContext(
+                    env.getProperty("paypal.client.app"),
+                    env.getProperty("paypal.client.secret"),
+                    env.getProperty("paypal.mode")), webhook);
+            System.out.println("Webhook successfully created with ID " + createdWebhook.getId());
+        } catch (PayPalRESTException e) {
+            System.err.println(e.getDetails());
+        }
+    }
 }
