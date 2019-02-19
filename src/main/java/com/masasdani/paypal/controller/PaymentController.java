@@ -92,8 +92,8 @@ public class PaymentController {
 		try {
 			// 执行支付
 			Payment payment = paypalService.executePayment(paymentId, payerId);
-			// 支付成功
-			if(payment.getState().equals("approved")){ // 这个相当于前端回调
+			// 支付成功, 这个相当于trade系统的前端回调
+			if(payment.getState().equals("approved")){
 				return "success";
 			}
 		} catch (PayPalRESTException e) {
