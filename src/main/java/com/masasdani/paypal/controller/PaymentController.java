@@ -59,19 +59,27 @@ public class PaymentController {
 			Payment payment = paypalService.createPayment(
 					4.00, 
 					"USD", 
-					PaypalPaymentMethod.paypal, 
+//					PaypalPaymentMethod.credit_card, // paypal rest api 不支持直接信用卡付款。必须有paypal账户。
+					PaypalPaymentMethod.paypal,
 					PaypalPaymentIntent.sale,
 					"payment description", 
 					cancelUrl, 
 					successUrl);
+			System.out.println("payment = "+ payment);
 			for(Links links : payment.getLinks()){
-				if(links.getRel().equals("approval_url")){ //重定向到paypal网站进行支付
+				//重定向到paypal网站进行支付
+				// 如果是支付方式为paypal，会有这个approval_url
+				if(links.getRel().equals("approval_url")){
+					System.out.println("approval_url"+links.getRel());
 					return "redirect:" + links.getHref();
 				}
+				// 如果是支付方式为credit_card，没有这个approval_url
+				System.out.println("links = "+ links);
 			}
 		} catch (PayPalRESTException e) {
 			log.error(e.getMessage());
 		}
+		System.out.println("---------redirect:/");
 		return "redirect:/";
 	}
 
