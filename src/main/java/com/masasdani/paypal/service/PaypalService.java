@@ -95,6 +95,7 @@ public class PaypalService {
 
     /**
      * subscribe webhook to events.
+     * 此功能可以在Paypal DashBoard中配置，不用编程的方式。
      */
     public void addWebHook(){
         //1. Define webhook events

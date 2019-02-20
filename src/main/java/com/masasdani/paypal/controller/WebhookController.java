@@ -40,9 +40,12 @@ public class WebhookController {
     public void webhooks(HttpServletRequest request) throws Exception {
         System.out.println("---------webhook--------");
         /**
-         * 这里用到的WebhookId是{@link PaypalService#addWebHook()}产生的.
-         * 这个WebhookId可以在产生时打印出来。
-         * 也可以在DashBoard中查看到，路径为My Apps & Credentials/REST API apps/{App Name}/SANDBOX WEBHOOKS
+         * 这里用到的WebhookId是创建Webhook时产生的.
+         * <p>
+         * 查看WebhookId：
+         * 1. 产生时打印出来（{@link PaypalService#addWebHook()}）
+         * 2. 在Paypal DashBoard中查看，路径为My Apps & Credentials/REST API apps/{App Name}/SANDBOX WEBHOOKS
+         * </p>
          */
         String WebhookId = "87K08989S8398921G";
         APIContext apiContext = new APIContext(
