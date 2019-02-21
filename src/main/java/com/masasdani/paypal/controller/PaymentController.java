@@ -54,7 +54,7 @@ public class PaymentController {
 	@RequestMapping(method = RequestMethod.POST, value = "pay")
 	public String pay(HttpServletRequest request){
 		String cancelUrl = URLUtils.getBaseURl(request) + "/" + PAYPAL_CANCEL_URL;
-		String successUrl = URLUtils.getBaseURl(request) + "/" + PAYPAL_CONFIRM_URL;
+		String confirmUrl = URLUtils.getBaseURl(request) + "/" + PAYPAL_CONFIRM_URL;
 		try {
 			Payment payment = paypalService.createPayment(
 					4.00, 
@@ -64,7 +64,7 @@ public class PaymentController {
 					PaypalPaymentIntent.sale,
 					"payment description", 
 					cancelUrl, 
-					successUrl);
+					confirmUrl);
 			System.out.println("payment = "+ payment);
 			for(Links links : payment.getLinks()){
 				//重定向到paypal网站进行支付
